@@ -16,7 +16,7 @@ public class WebConfig {
                 // Esta configuración permite que cualquier origen (*)
                 // se conecte a todos tus endpoints (/**)
                 registry.addMapping("/**")
-                        .allowedOrigins("http://localhost:4200", "http://localhost:8080", "https://*.ngrok-free.app") // Permite cualquier origen (dominio)
+                        .allowedOrigins("http://localhost:4200", "http://localhost:8080", "https://*.ngrok-free.app","https://kevintorrezv.github.io") // Permite cualquier origen (dominio)
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS") // Permite todos los métodos HTTP comunes
                         .allowedHeaders("*"); // Permite cualquier cabecera en la petición
             }
