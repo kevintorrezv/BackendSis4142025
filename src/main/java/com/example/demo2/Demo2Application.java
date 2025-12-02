@@ -23,7 +23,6 @@ import org.springframework.context.annotation.Bean;
         servers = {
                 // ¡MUY IMPORTANTE! Reemplaza esta URL con la que te genera Ngrok cada vez que lo inicies.
                 @Server(url = "https://semihumanized-stoopingly-emerald.ngrok-free.dev", description = "Servidor de Producción (Ngrok)"),
-                @Server(url = "https://exceptional-patrizia-systemstudio-46f70e92.koyeb.app/", description = "Servidor de Producción (Ngrok)"),
                 // Dejamos el servidor local para pruebas en tu máquina.
                 @Server(url = "http://localhost:8080", description = "Servidor de Desarrollo Local")
         }
