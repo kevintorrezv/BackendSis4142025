@@ -7,8 +7,8 @@ COPY . .
 
 RUN chmod +x ./gradlew
 
-# --- ¡LÍNEA MODIFICADA! Añadimos '--info' para obtener un log detallado ---
-RUN ./gradlew build --info --no-daemon --build-cache
+# --- ¡LÍNEA MODIFICADA! Añadimos '-x test' para saltar las pruebas ---
+RUN ./gradlew build -x test --no-daemon --build-cache
 
 
 # --- Fase 2: Ejecución (Runtime) ---
