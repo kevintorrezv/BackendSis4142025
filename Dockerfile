@@ -1,7 +1,7 @@
 # --- Fase 1: Construcción (Build) ---
 # Usamos una imagen oficial de Gradle que ya tiene el JDK 24.
 # La versión 8.8.0 es la más reciente compatible.
-FROM gradle:8.8.0-jdk21 AS builder
+FROM gradle:8.8-jdk21-alpine AS builder
 
 # Establecemos el directorio de trabajo dentro del contenedor.
 WORKDIR /app
@@ -22,7 +22,7 @@ RUN gradle build --no-daemon
 # --- Fase 2: Ejecución (Runtime) ---
 # Usamos una imagen oficial de Java 24 mucho más ligera.
 # 'slim' significa que solo tiene lo esencial para ejecutar, no para compilar.
-FROM openjdk:21-slim
+FROM eclipse-temurin:21-jre-alpine
 
 # Establecemos el directorio de trabajo.
 WORKDIR /app
