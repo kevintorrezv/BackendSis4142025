@@ -1,38 +1,28 @@
 # --- Fase 1: Construcción (Build) ---
-# Usamos una imagen oficial de Gradle que ya tiene el JDK 24.
-# La versión 8.8.0 es la más reciente compatible.
 FROM gradle:8.8-jdk21-alpine AS builder
 
-# Establecemos el directorio de trabajo dentro del contenedor.
 WORKDIR /app
 
-# Copiamos solo los archivos de build primero para aprovechar el caché de Docker.
-# Esto hace que las futuras compilaciones sean más rápidas.
-COPY build.gradle settings.gradle ./
-COPY gradle ./gradle
+# Copiamos todo el proyecto al contenedor
+# Hacemos esto primero para poder cambiar los permisos
+COPY . .
 
-# Copiamos el resto del código fuente de tu aplicación.
-COPY src ./src
+# --- ¡LA LÍNEA CLAVE DE LA SOLUCIÓN! ---
+# Damos permisos de ejecución al script gradlew dentro del entorno Linux de Docker.
+RUN chmod +x ./gradlew
 
-# Ejecutamos el comando de Gradle para construir la aplicación.
-# Esto compilará el código y creará el archivo JAR ejecutable.
-RUN gradle build --no-daemon
+# Ahora ejecutamos el comando de build usando el wrapper para asegurar consistencia.
+RUN ./gradlew build --no-daemon --build-cache
 
 
 # --- Fase 2: Ejecución (Runtime) ---
-# Usamos una imagen oficial de Java 24 mucho más ligera.
-# 'slim' significa que solo tiene lo esencial para ejecutar, no para compilar.
 FROM eclipse-temurin:21-jre-alpine
 
-# Establecemos el directorio de trabajo.
 WORKDIR /app
 
-# Copiamos el archivo JAR que se construyó en la fase anterior desde la carpeta de build.
+# Copiamos solo el JAR compilado desde la fase de construcción.
 COPY --from=builder /app/build/libs/*.jar app.jar
 
-# Exponemos el puerto 8080. Esto le dice a Render que tu aplicación escucha en este puerto.
 EXPOSE 8080
 
-# El comando que se ejecutará cuando el contenedor inicie.
-# Esto es equivalente a 'java -jar app.jar' en tu terminal.
 ENTRYPOINT ["java", "-jar", "app.jar"]
