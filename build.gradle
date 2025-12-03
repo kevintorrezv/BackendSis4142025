@@ -31,3 +31,7 @@ dependencies {
 tasks.named('test') {
 	useJUnitPlatform()
 }
+// Añade este bloque al final de tu archivo build.gradle
+jar {
+    enabled = false
+}
